@@ -1,7 +1,6 @@
 /.idea/
 /sources/
 /tools/
-/docker-compose.yml
 /image/isolinux/
 /image/loop/
 /image/lfs.*

@@ -3,7 +3,7 @@
 This repository is a collection of scripts created especially to
 automate the build process of Linux From Scratch (LFS).
 
-Current stable version of LFS is 8.3
+Currently used version of LFS is 12.4-rc1
 
 ## How to use
 
@@ -19,7 +19,6 @@ Clone from github and prepare the repository:
 
     git clone https://github.com/EvilFreelancer/docker-lfs-build.git
     cd docker-lfs-build
-    cp docker-compose.yml.dist docker-compose.yml
 
 Start container:
 
@@ -54,8 +53,3 @@ services:
     # by default here is ["/book/book.sh"]
     entrypoint: ["sleep", "inf"]
 ```
-
-## Links
-
-* [Unofficial LFS group in Discord](https://discord.gg/NUSW8yF)
-* [Project on which this project is based](https://github.com/reinterpretcat/lfs)

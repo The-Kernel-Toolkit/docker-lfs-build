@@ -2,8 +2,8 @@ FROM debian:9
 
 # image info
 LABEL description="Automated LFS build"
-LABEL version="8.3"
-LABEL maintainer="paul@drteam.rocks"
+LABEL version="12.4-rc1"
+LABEL maintainer="ETJAKEOC@gmail.com"
 
 # LFS mount point
 ENV LFS=/lfs
