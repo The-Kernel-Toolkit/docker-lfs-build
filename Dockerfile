@@ -1,4 +1,4 @@
-FROM debian:9
+FROM debian:sid
 
 # image info
 LABEL description="Automated LFS build"
@@ -48,14 +48,8 @@ RUN rm sh && ln -s bash sh
 
 # install required packages
 RUN apt-get update && apt-get install -y \
-    build-essential                      \
-    bison                                \
-    file                                 \
-    gawk                                 \
-    texinfo                              \
-    wget                                 \
-    sudo                                 \
-    genisoimage                          \
+    build-essential bison file gawk texinfo \
+    wget sudo genisoimage gcc clang lld llvm binutils \
  && apt-get -q -y autoremove             \
  && rm -rf /var/lib/apt/lists/*
 
@@ -91,7 +85,6 @@ RUN $LFS/book/version-check.sh \
 RUN groupadd lfs                                    \
  && useradd -s /bin/bash -g lfs -m -k /dev/null lfs \
  && echo "lfs:lfs" | chpasswd
-RUN adduser lfs sudo
 
 # give lfs user ownership of directories
 RUN chown -v lfs $LFS/tools  \
