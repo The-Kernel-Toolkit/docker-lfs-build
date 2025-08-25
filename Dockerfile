@@ -12,7 +12,7 @@ ENV LFS=/lfs
 ENV LC_ALL=POSIX
 ENV LFS_TGT=x86_64-lfs-linux-gnu
 ENV PATH=/tools/bin:/bin:/usr/bin:/sbin:/usr/sbin
-ENV MAKEFLAGS="-j 1"
+ENV MAKEFLAGS="-j 4"
 
 # set 1 to run tests; running tests takes much more time
 ENV LFS_TEST=0
@@ -21,7 +21,7 @@ ENV LFS_TEST=0
 ENV LFS_DOCS=0
 
 # degree of parallelism for compilation
-ENV JOB_COUNT=1
+ENV JOB_COUNT=4
 
 # loop device
 ENV LOOP=/dev/loop2
@@ -72,6 +72,9 @@ RUN mkdir -pv     $LFS/image   \
 COPY ["book/", "$LFS/book/"]
 COPY ["image/", "$LFS/image/"]
 COPY ["sources/", "$LFS/sources/"]
+COPY ["sources/wget-list", "$LFS/sources/wget-list"]
+COPY [ ".bash_profile", ".bashrc", "/root/" ]
+RUN source /root/.bash_profile
 
 # create tools directory and symlink
 RUN mkdir -pv $LFS/tools   \
@@ -80,25 +83,6 @@ RUN mkdir -pv $LFS/tools   \
 # check environment
 RUN $LFS/book/version-check.sh \
  && $LFS/book/library-check.sh
-
-# create lfs user with 'lfs' password
-RUN groupadd lfs                                    \
- && useradd -s /bin/bash -g lfs -m -k /dev/null lfs \
- && echo "lfs:lfs" | chpasswd
-
-# give lfs user ownership of directories
-RUN chown -v lfs $LFS/tools  \
- && chown -v lfs $LFS/sources
-
-# avoid sudo password
-RUN echo 'Defaults secure_path="/tools/bin:/bin:/usr/bin:/sbin:/usr/sbin"' >> /etc/sudoers
-RUN echo "lfs ALL = NOPASSWD : ALL" >> /etc/sudoers
-RUN echo 'Defaults env_keep += "LFS LC_ALL LFS_TGT PATH MAKEFLAGS FETCH_TOOLCHAIN_MODE LFS_TEST LFS_DOCS JOB_COUNT LOOP LOOP_DIR IMAGE_SIZE INITRD_TREE IMAGE_RAM IMAGE_BZ2 IMAGE_ISO IMAGE_HDD"' >> /etc/sudoers
-
-# login as lfs user
-USER lfs
-COPY [ ".bash_profile", ".bashrc", "/home/lfs/" ]
-RUN source ~/.bash_profile
 
 # change path to home folder as default
 WORKDIR /home/lfs

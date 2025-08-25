@@ -4,7 +4,7 @@ services:
   lfs:
     restart: unless-stopped
     privileged: true
-    image: evilfreelancer/docker-lfs-build
+    image: The-Kernel-Toolkit/docker-lfs-build
     volumes:
       - ./book:/lfs/book
       - ./image:/lfs/image
